@@ -5,6 +5,15 @@ import argparse
 import pandas as pd
 
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
+
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.metrics import log_loss
+
+from features import NUMERIC_FEATURES, CATEGORICAL_FEATURES
 from util import save_model, generate_hash, load_config, save_config, save_evaluation
 
 MODEL_HASH = generate_hash()
@@ -38,8 +47,32 @@ if __name__ == '__main__':
     X_val, y_val = val[features], val[target]
 
     # Train a model
-    clf = RandomForestClassifier()
-    clf.fit(X, y)
+    numeric_transformer = Pipeline(steps = [
+        ('imputer', SimpleImputer(strategy = 'mean')),
+        ('scaler', StandardScaler())
+    ])
+
+    categorical_transformer = Pipeline(steps = [
+        ('imputer', SimpleImputer(strategy = 'constant')),
+        ('one-hot', OneHotEncoder(handle_unknown = 'ignore'))
+    ])
+
+    transformer = ColumnTransformer(transformers = [
+        #('numeric', numeric_transformer, NUMERIC_FEATURES)
+        ('categorical', categorical_transformer, CATEGORICAL_FEATURES)
+    ])
+
+    clf = MLPClassifier(
+        hidden_layer_sizes = (4, 2,),
+        random_state = 777
+    )
+
+    pipeline = Pipeline(steps = [
+        ('transformer', transformer),
+        ('classifier', clf)
+    ])
+
+    pipeline.fit(X, y)
 
     # Save model
     os.mkdir(MODEL_DIR)
@@ -51,5 +84,6 @@ if __name__ == '__main__':
     save_evaluation()
 
     # Evaluate
-    print(f"Training Accuracy = {clf.score(X, y)}")
-    print(f"Validation Accuracy = {clf.score(X_val, y_val)}")
+    print(f"Training Accuracy = {pipeline.score(X, y)}")
+    print(f"Validation Accuracy = {pipeline.score(X_val, y_val)}")
+    print(f"Validation LogLoss = {log_loss(y_val, pipeline.predict_proba(X_val)[:, 1])}")

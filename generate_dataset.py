@@ -83,7 +83,6 @@ if __name__ == '__main__':
     print(f"Generating training, validation, and test sets...")
     all_data = tr2.copy()
 
-    # TODO: submission sample is different for stage 2
     test_ids = ss['ID']
     train = all_data[~all_data['ID'].isin(test_ids)]
     validate = train.sample(int(VALIDATION_SET_SIZE * train.shape[0]), random_state = 42)

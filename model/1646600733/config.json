@@ -1,7 +1,0 @@
-{
-    "features": [
-        "team_a_seed_num",
-        "team_b_seed_num"
-    ],
-    "target": "result"
-}
