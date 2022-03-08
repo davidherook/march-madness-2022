@@ -1,4 +1,5 @@
 # python train.py --stage s1 --config config.yaml
+
 import os
 import yaml
 import argparse
@@ -46,6 +47,8 @@ if __name__ == '__main__':
     X, y = train[features], train[target]
     X_val, y_val = val[features], val[target]
 
+    print(f"\nTraining on {train.shape[0]} records using {len(features)} features")
+
     # Train a model
     numeric_transformer = Pipeline(steps = [
         ('imputer', SimpleImputer(strategy = 'mean')),
@@ -58,12 +61,12 @@ if __name__ == '__main__':
     ])
 
     transformer = ColumnTransformer(transformers = [
-        #('numeric', numeric_transformer, NUMERIC_FEATURES)
+        ('numeric', numeric_transformer, NUMERIC_FEATURES),
         ('categorical', categorical_transformer, CATEGORICAL_FEATURES)
     ])
 
     clf = MLPClassifier(
-        hidden_layer_sizes = (4, 2,),
+        hidden_layer_sizes = (16, 16, 8, 8, ),
         random_state = 777
     )
 
@@ -83,6 +86,7 @@ if __name__ == '__main__':
     os.mkdir(EVALUATION_DIR)
     save_evaluation()
 
+    # TODO
     # Evaluate
     print(f"Training Accuracy = {pipeline.score(X, y)}")
     print(f"Validation Accuracy = {pipeline.score(X_val, y_val)}")

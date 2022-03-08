@@ -48,8 +48,7 @@ $ python predict.py --model 1646588926 --data data/datasets_stage1/test_data.csv
 Prediction files have been saved to submission/1646588926
 ```
 
-# TODO
-- evaluation resources
-- more features
-- different model
-- adjust for stage2
+## TODO:
+- Add features
+- Evaluation
+- Use keras
