@@ -31,12 +31,25 @@ Test Data: (11390, 11)
 ```
 
 ## Train a Model
-Train a model with a config file which tells the model which features to use. The model and its config are saved to the `model` directory and several resources to evaluate the performance are saved to `evaluation`.
+Train a model with a config file which tells the model which features to use. The model and its config are saved to the `model` directory and evaluation metrics will be printed to the screen. You can also run a grid search over different models and parameters using `--gridsearch`.
 ```
-$ python train.py --config config.yaml
+$ python train.py --stage s1 --config config.yaml
 
-Training Accuracy = 0.7372400756143668
+Training on 1587 records using 6 features
+Using the features ['team_a_seed_num', 'team_b_seed_num', 'score_mean_a', 'score_std_a', 'score_mean_b', 'score_std_b']
+
+Training Accuracy = 0.724007561436673
 Validation Accuracy = 0.7095959595959596
+Validation LogLoss = 0.5572573911837003
+
+          Predicted 0  Predicted 1
+Actual 0          120           54
+Actual 1           61          161
+Precision: 0.7488372093023256
+Recall: 0.7252252252252253
+F1: 0.736842105263158
+
+Model artifacts saved to model/1647195036
 ```
 
 ## Make Predictions
@@ -47,8 +60,3 @@ $ python predict.py --model 1646588926 --data data/datasets_stage1/test_data.csv
 
 Prediction files have been saved to submission/1646588926
 ```
-
-## TODO:
-- Add features
-- Evaluation
-- Use keras

@@ -1,4 +1,4 @@
-# python predict.py --model 1646588926 --data data/datasets_stage1/test_data.csv
+# python predict.py --model 1647195036 --data data/datasets_stage1/test_data.csv
 
 import os
 import argparse

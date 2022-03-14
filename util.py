@@ -2,6 +2,8 @@ import os
 import json
 import time
 import joblib
+import pandas as pd
+from sklearn.metrics import confusion_matrix
 
 def generate_hash():
     t = int(time.time())
@@ -31,5 +33,8 @@ def load_model(model_dir):
     filepath = get_model_path(model_dir)
     return joblib.load(filepath)
 
-def save_evaluation():
-    pass
+def pretty_confusion_matrix(y_true, y_pred):
+    cm = pd.DataFrame(confusion_matrix(y_true, y_pred))
+    cm.columns = ['Predicted {}'.format(c) for c in cm.columns]
+    cm.index = ['Actual {}'.format(c) for c in cm.index]
+    return cm

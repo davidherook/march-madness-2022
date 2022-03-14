@@ -1,0 +1,11 @@
+{
+    "features": [
+        "team_a_seed_num",
+        "team_b_seed_num",
+        "score_mean_a",
+        "score_std_a",
+        "score_mean_b",
+        "score_std_b"
+    ],
+    "target": "result"
+}

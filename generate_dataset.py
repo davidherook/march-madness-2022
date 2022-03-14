@@ -20,18 +20,20 @@ VALIDATION_SET_SIZE = .20
 def get_seed(x):
     return int(re.search('\d+',str(x)).group(0))
 
-def generate_test_set(submission_sample, seed_data, reg_season_data):
+def generate_test_set(submission_sample, seed_data, reg_season_data, teams_data):
     """Use the submission sample and join the features we need to make predictions"""
     submission_sample['Season'] = submission_sample['ID'].apply(lambda x: x.split('_')[0]).astype(int)
     submission_sample['team_a'] = submission_sample['ID'].apply(lambda x: x.split('_')[1]).astype(int)
     submission_sample['team_b'] = submission_sample['ID'].apply(lambda x: x.split('_')[2]).astype(int)
-    test = pd.merge(submission_sample, seed_data, how='left', left_on=['Season', 'team_a'], right_on=['Season', 'TeamID'])
-    test1 = pd.merge(test, seed_data, how='left', left_on=['Season', 'team_b'], right_on=['Season', 'TeamID'])
+    test = pd.merge(submission_sample, seed_data, how = 'left', left_on = ['Season', 'team_a'], right_on = ['Season', 'TeamID'])
+    test1 = pd.merge(test, seed_data, how = 'left', left_on = ['Season', 'team_b'], right_on = ['Season', 'TeamID'])
     test1.rename({'Seed_x': 'team_a_seed', 'Seed_y': 'team_b_seed'}, axis = 1, inplace = True)
     test1['team_a_seed_num'] = test1['team_a_seed'].apply(get_seed)
     test1['team_b_seed_num'] = test1['team_b_seed'].apply(get_seed)
     test2 = join_reg_season_features(test1, reg_season_data)
-    return test2
+    test3 = pd.merge(test2, teams_data, how = 'left', left_on = 'TeamID_a', right_on = 'TeamID')
+    test4 = pd.merge(test3, teams_data, how = 'left', left_on = 'TeamID_b', right_on = 'TeamID')
+    return test4
 
 def convert_team_order_to_kaggle_format(tr):
     tr['win_team_is_low_id'] = tr['WTeamID'] < tr['LTeamID']
@@ -141,7 +143,7 @@ if __name__ == '__main__':
     train = all_data[~all_data['ID'].isin(test_ids)]
     validate = train.sample(int(VALIDATION_SET_SIZE * train.shape[0]), random_state = 42)
     train = train.drop(validate.index)
-    test = generate_test_set(ss, ts, rs)
+    test = generate_test_set(ss, ts, rs, t)
     assert set(train.index).isdisjoint(set(validate.index))
     assert test.shape[0] == ss.shape[0]
 

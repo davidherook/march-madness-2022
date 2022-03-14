@@ -6,22 +6,22 @@ features:
 # Regular Season Stats
 - score_mean_a
 - score_std_a
-- score_min_a
-- score_max_a
-- diff_mean_a
-- diff_std_a
-- diff_min_a
-- diff_max_a
-- is_home_mean_a
+# - score_min_a
+# - score_max_a
+# - diff_mean_a
+# - diff_std_a
+# - diff_min_a
+# - diff_max_a
+# - is_home_mean_a
 
 - score_mean_b
 - score_std_b
-- score_min_b
-- score_max_b
-- diff_mean_b
-- diff_std_b
-- diff_min_b
-- diff_max_b
-- is_home_mean_b
+# - score_min_b
+# - score_max_b
+# - diff_mean_b
+# - diff_std_b
+# - diff_min_b
+# - diff_max_b
+# - is_home_mean_b
 
 target: result
