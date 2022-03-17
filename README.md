@@ -1,5 +1,6 @@
 # Kaggle March Madness 2022
-Predict the outcome for each game of the 2022 March Madness NCAA Tournament for the [competition hosted on Kaggle](https://www.kaggle.com/c/mens-march-mania-2022)
+Predict the outcome for each game of the 2022 March Madness NCAA Tournament for the [competition hosted on Kaggle](https://www.kaggle.com/c/mens-march-mania-2022).
+Final submission can be seen [in Tableau Public here](https://public.tableau.com/app/profile/david.herook/viz/MarchMachineLearningMania2022/Matchups).
 
 ## Getting Started
 
@@ -33,7 +34,7 @@ Test Data: (11390, 11)
 ## Train a Model
 Train a model with a config file which tells the model which features to use. The model and its config are saved to the `model` directory and evaluation metrics will be printed to the screen. You can also run a grid search over different models and parameters using `--gridsearch`.
 ```
-$ python train.py --stage s1 --config config.yaml
+$ python train.py --stage s2 --config config.yaml
 
 Training on 1587 records using 6 features
 Using the features ['team_a_seed_num', 'team_b_seed_num', 'score_mean_a', 'score_std_a', 'score_mean_b', 'score_std_b']
@@ -52,11 +53,17 @@ F1: 0.736842105263158
 Model artifacts saved to model/1647195036
 ```
 
+You can also try a grid search to explore different models and parameters:
+```
+$ python train.py --stage s2 --config config.yaml --gridsearch
+```
+
+
 ## Make Predictions
 To make predictions, pass the model hash you wish to use and the path to the test set. A new column named `pred` will be appended to the test set and it will be written to the `submission` folder in a subdirectory named with the model hash. Two files will be written: `predictions.csv` with the original test set plus predictions and `predictions_submission.csv` which contains the predictions in the required format for Kaggle submission.
 
 ```
-$ python predict.py --model 1646588926 --data data/datasets_stage1/test_data.csv
+$ python predict.py --model 1647481947 --data data/datasets_stage1/test_data.csv
 
 Prediction files have been saved to submission/1646588926
 ```

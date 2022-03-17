@@ -1,0 +1,13 @@
+{
+    "features": [
+        "team_a_seed_num",
+        "team_b_seed_num",
+        "score_mean_a",
+        "score_mean_b"
+    ],
+    "target": "result",
+    "classifier": "LogisticRegression",
+    "parameters": {
+        "C": 1.0
+    }
+}

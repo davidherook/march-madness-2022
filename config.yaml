@@ -5,7 +5,7 @@ features:
 
 # Regular Season Stats
 - score_mean_a
-- score_std_a
+# - score_std_a
 # - score_min_a
 # - score_max_a
 # - diff_mean_a
@@ -15,7 +15,7 @@ features:
 # - is_home_mean_a
 
 - score_mean_b
-- score_std_b
+# - score_std_b
 # - score_min_b
 # - score_max_b
 # - diff_mean_b
@@ -25,3 +25,7 @@ features:
 # - is_home_mean_b
 
 target: result
+
+classifier: LogisticRegression
+parameters:
+  C: 1.0

@@ -1,5 +1,5 @@
 ################################################
-# python generate_dataset.py --stage s1
+# python generate_dataset.py --stage s2
 #
 # Stage 1
 # Train / Valdate = tournaments before 2016

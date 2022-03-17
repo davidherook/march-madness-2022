@@ -1,5 +1,5 @@
-# python train.py --stage s1 --config config.yaml
-# python train.py --stage s1 --config config.yaml --gridsearch
+# python train.py --stage s2 --config config.yaml
+# python train.py --stage s2 --config config.yaml --gridsearch
 
 import os
 import yaml
@@ -16,16 +16,15 @@ from sklearn.compose import ColumnTransformer
 from sklearn.metrics import log_loss
 
 from features import NUMERIC_FEATURES, CATEGORICAL_FEATURES
-from util import save_model, generate_hash, load_config, save_config, pretty_confusion_matrix
+from util import save_model, generate_hash, load_config, save_config, pretty_confusion_matrix, \
+    get_classifier_from_config
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
 
 MODEL_HASH = generate_hash()
 MODEL_BASE_DIR = 'model'
-EVALUATION_BASE_DIR = 'evaluation'
 MODEL_DIR = os.path.join(MODEL_BASE_DIR, MODEL_HASH)
-EVALUATION_DIR = os.path.join(EVALUATION_BASE_DIR, MODEL_HASH)
 
 if __name__ == '__main__':
 
@@ -44,8 +43,10 @@ if __name__ == '__main__':
 
     with open(config_path) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
+
     features = config['features']
     target = config['target']
+    classifier = get_classifier_from_config(config['classifier'], config['parameters'], globals())
 
     NUMERIC_FEATURES = [f for f in NUMERIC_FEATURES if f in features]
     CATEGORICAL_FEATURES = [f for f in CATEGORICAL_FEATURES if f in features]
@@ -75,18 +76,9 @@ if __name__ == '__main__':
         ('categorical', categorical_transformer, CATEGORICAL_FEATURES)
     ])
 
-    # clf = MLPClassifier(
-    #     hidden_layer_sizes = (16, 16, ),
-    #     solver = 'adam',
-    #     verbose = False,
-    #     random_state = 777
-    # )
-
-    clf = LogisticRegression(C=1.0)
-
     pipeline = Pipeline(steps = [
         ('transformer', transformer),
-        ('classifier', clf)
+        ('classifier', classifier)
     ])
 
     if gridsearch:
