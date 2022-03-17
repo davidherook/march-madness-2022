@@ -130,3 +130,7 @@ dmypy.json
 
 .DS_Store
 tableau
+data/datasets_stage1
+data/MDataFiles_Stage1
+submission/1647195036
+submission/baseline_stage1.csv
